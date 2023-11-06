@@ -37,16 +37,15 @@ const update = (id, newObject) => {
     const request = axios.put(`${baseUrl}/${id}`, newObject)
     return request.then(response => response.data)
   }
-
+*/
 // Remove a note in the database
-const deleteNote = (id) => {
-  if(window.confirm("Do you really want to delete this note?"))
-  {
+const deletePerson = (id) => {
+  
     const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data)
-  }
+  
 }
-  */
+  
 // Export this object that allows App.jsx to use our methods
 // Because the field and variable names are the same we can combine them for simplicity.
-export default {getAll, create}
+export default {getAll, create, deletePerson}

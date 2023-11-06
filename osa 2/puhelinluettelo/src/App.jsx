@@ -56,6 +56,21 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
+  const deleteContact = (id) => {
+    
+    if(window.confirm("Do you really want to delete this contact?"))
+    {
+      contactsServices.deletePerson(id)
+
+      setPersons(oldPersons => oldPersons.filter(oldPerson => oldPerson.id !== id))
+    } 
+    /*
+       .then(returnedNotes => {
+            console.log(returnedNotes)
+            setNotes(returnedNotes)
+      })*/
+  }
+
   const peopleToShow = persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()) || person.number.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
@@ -74,7 +89,7 @@ const App = () => {
         </div>
       </form>
       <h2>Contacts</h2>
-      {peopleToShow.map((contact) => <div className="personInfo"><p>{contact.name}</p><p>{contact.number}</p></div> )}
+      {peopleToShow.map((contact) => <div className="personInfo"><p>{contact.name}</p><p>{contact.number}</p><button onClick={() => deleteContact(contact.id)}>Delete</button></div> )}
     </div>
   )
 
