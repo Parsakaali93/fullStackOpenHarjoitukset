@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3000/persons'
+const baseUrl = '/api/persons'
 
 // Get all notes in the database
 const getAll = () => {
