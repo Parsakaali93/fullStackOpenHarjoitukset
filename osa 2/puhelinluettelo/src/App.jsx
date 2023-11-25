@@ -7,7 +7,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const hook = () => {
     console.log('useEffect')
@@ -17,6 +17,11 @@ const App = () => {
   // Call the hook function on first render only to fetch notes from the server
   useEffect(hook, [])
 
+  const showError = function(message)
+  {
+    setErrorMessage(message)
+    setTimeout(() => {setErrorMessage(null)}, 5000)
+  }
 
   // Add new contact to the phonebook
   const addName = event => {
@@ -29,12 +34,14 @@ const App = () => {
 
     // Check if there's a person with this name already
     if(!persons.some(person => person.name === newName))
-      contactsServices.create(nameObj).then(response => {setPersons(oldPersons => [...oldPersons, response])})
+      contactsServices.create(nameObj)
+      .then(response => {setPersons(oldPersons => [...oldPersons, response])})
+      .catch(error => {
+        showError(error.response.data.error)
+      })
     
     else
-      alert("This name is already added to the phonebook")
-
-    
+      showError('Person already exists in the phonebook')
 
     // Clear name and num fields
     setNewName('')
@@ -76,6 +83,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <p className='errorMessage'>{errorMessage}</p>
         <input className='searchBar' placeholder='Filter Contacts' value={searchTerm} onChange={handleSearchChange}/>
 
       <form onSubmit={addName}>
